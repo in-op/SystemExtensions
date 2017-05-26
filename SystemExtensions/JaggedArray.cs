@@ -21,7 +21,7 @@ namespace SystemExtensions
         public static T[] Create<T>(int x, T val)
         {
             T[] output = new T[x];
-            if (typeof(T).IsValueType || val == null)
+            if (typeof(T).IsValueType)
                 for (int i = 0; i < x; i++)
                     output[i] = val;
             else
@@ -53,7 +53,7 @@ namespace SystemExtensions
         {
             T[][] output = new T[x][];
 
-            if (typeof(T).IsValueType || val == null)
+            if (typeof(T).IsValueType)
                 for (int i = 0; i < x; i++)
                 {
                     output[i] = new T[y];
@@ -93,7 +93,7 @@ namespace SystemExtensions
         public static T[][][] Create<T>(int x, int y, int z, T val)
         {
             T[][][] output = new T[x][][];
-            if (typeof(T).IsValueType || val == null)
+            if (typeof(T).IsValueType)
                 for (int i = 0; i < x; i++)
                 {
                     output[i] = new T[y][];
@@ -144,7 +144,7 @@ namespace SystemExtensions
         public static T[][][][] Create<T>(int x, int y, int z, int a, T val)
         {
             T[][][][] output = new T[x][][][];
-            if (typeof(T).IsValueType || val == null)
+            if (typeof(T).IsValueType)
                 for (int i = 0; i < x; i++)
                 {
                     output[i] = new T[y][][];

@@ -153,7 +153,7 @@ namespace SystemExtensions
         /// <typeparam name="T">The array type.</typeparam>
         /// <typeparam name="TFuncArgs">The type of the input parameter for the func delegate.</typeparam>
         /// <param name="x">The length of the first array.</param>
-        /// <param name="y">The length of each seconday array.</param>
+        /// <param name="y">The length of each secondary array.</param>
         /// <param name="funcArgs">The input given to the func delegate.</param>
         /// <param name="func">A delegate to initialize each element.</param>
         /// <returns></returns>
@@ -273,7 +273,7 @@ namespace SystemExtensions
         /// <typeparam name="T">The array type.</typeparam>
         /// <typeparam name="TFuncArgs">The type of the input parameter for the func delegate.</typeparam>
         /// <param name="x">The length of the first array.</param>
-        /// <param name="y">The length of each seconday array.</param>
+        /// <param name="y">The length of each secondary array.</param>
         /// <param name="z">The length of each tertiary array.</param>
         /// <param name="funcArgs">The input given to the func delegate.</param>
         /// <param name="func">A delegate to initialize each element.</param>
@@ -421,7 +421,7 @@ namespace SystemExtensions
         /// <typeparam name="T">The array type.</typeparam>
         /// <typeparam name="TFuncArgs">The type of the input parameter for the func delegate.</typeparam>
         /// <param name="x">The length of the first array.</param>
-        /// <param name="y">The length of each seconday array.</param>
+        /// <param name="y">The length of each secondary array.</param>
         /// <param name="z">The length of each tertiary array.</param>
         /// <param name="a">The length of each 4th array.</param>
         /// <param name="funcArgs">The input given to the func delegate.</param>
@@ -590,7 +590,7 @@ namespace SystemExtensions
         /// <typeparam name="T">The array type.</typeparam>
         /// <typeparam name="TFuncArgs">The type of the input parameter for the func delegate.</typeparam>
         /// <param name="x">The length of the first array.</param>
-        /// <param name="y">The length of each seconday array.</param>
+        /// <param name="y">The length of each secondary array.</param>
         /// <param name="z">The length of each tertiary array.</param>
         /// <param name="a">The length of each 4th array.</param>
         /// <param name="b">The length of each 5th array.</param>

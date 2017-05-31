@@ -2,6 +2,9 @@
 
 namespace SystemExtensions.Copying
 {
+    /// <summary>
+    /// A method class implementing a DeepCopy() extension method for arrays and jagged arrays up to 5 dimensions.
+    /// </summary>
     public static class CopyableArrays
     {
         /// <summary>
@@ -33,6 +36,48 @@ namespace SystemExtensions.Copying
                         {
                             throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                         }
+            return copy;
+        }
+
+
+        /// <summary>
+        /// Returns a deep copy of the calling array utilizing multithreading.
+        /// If the array type <typeparamref name="T"/> is a reference type it
+        /// must implement a parameterless instance
+        /// method DeepCopy(), which returns a deep
+        /// copy of the instance. If <typeparamref name="T"/> is a value type,
+        /// it must be immutable.
+        /// </summary>
+        /// <typeparam name="T">The array type.</typeparam>
+        /// <param name="array">The calling array.</param>
+        /// <returns>A deep copy of the calling array.</returns>
+        public static T[] ParallelDeepCopy<T>(this T[] array)
+        {
+            int x = array.Length;
+            T[] copy = new T[x];
+
+            if (typeof(T).IsValueType)
+                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                {
+                    copy[i] = array[i];
+                });
+            else
+                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                {
+                    if (array[i] == null) copy[i] = default(T);
+                    else
+                        try
+                        {
+                            object item = array[i];
+                            var deepCopy = item.GetType().GetMethod("DeepCopy");
+                            copy[i] = (T)deepCopy.Invoke(item, new object[0]);
+                        }
+                        catch
+                        {
+                            throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
+                        }
+                });
+
             return copy;
         }
 

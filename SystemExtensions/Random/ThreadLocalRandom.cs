@@ -2,7 +2,7 @@
 using System.Threading;
 
 /// <summary>
-/// CITATION: this class was shamelessly and proudly copied from Jon Skeet's blog:
+/// CITATION for this class:
 /// https://codeblog.jonskeet.uk/2009/11/04/revisiting-randomness/
 /// </summary>
 

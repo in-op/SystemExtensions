@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>default</LangVersion>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\SystemExtensions.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity 5.5 Compatible|AnyCPU'">
     <OutputPath>bin\Unity 5.5 Compatible\</OutputPath>

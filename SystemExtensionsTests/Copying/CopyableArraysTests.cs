@@ -45,5 +45,23 @@ namespace SystemExtensions.Copying.Tests
                 if (array[i] != copy[i])
                     Assert.Fail();
         }
+
+
+        [TestMethod()]
+        public void DeepCopy2DArrayWorksWithClass()
+        {
+            CopyableClass[][] array = new CopyableClass[3][]
+            {
+                new CopyableClass[1] { new CopyableClass(1) },
+                new CopyableClass[1] { new CopyableClass(2) },
+                new CopyableClass[1] { new CopyableClass(3) }
+            };
+            CopyableClass[][] copy;
+            copy = array.DeepCopy();
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 1; j++)
+                    if (array[i][j].x != copy[i][j].x)
+                        Assert.Fail();
+        }
     }
 }

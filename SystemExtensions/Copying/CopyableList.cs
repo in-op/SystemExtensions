@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace SystemExtensions.Copying
 {
+    /// <summary>
+    /// A method class for implementing a DeepCopy() method on generic Lists.
+    /// </summary>
     public static class CopyableList
     {
         /// <summary>

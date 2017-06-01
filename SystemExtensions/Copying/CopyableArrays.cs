@@ -32,7 +32,7 @@ namespace SystemExtensions.Copying
                             var deepCopy = item.GetType().GetMethod("DeepCopy");
                             copy[i] = (T)deepCopy.Invoke(item, new object[0]);
                         }
-                        catch
+                        catch (ArgumentNullException)
                         {
                             throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                         }
@@ -72,7 +72,7 @@ namespace SystemExtensions.Copying
                             var deepCopy = item.GetType().GetMethod("DeepCopy");
                             copy[i] = (T)deepCopy.Invoke(item, new object[0]);
                         }
-                        catch
+                        catch (ArgumentNullException)
                         {
                             throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                         }
@@ -116,7 +116,7 @@ namespace SystemExtensions.Copying
                                 var deepCopy = item.GetType().GetMethod("DeepCopy");
                                 copy[i][j] = (T)deepCopy.Invoke(item, new object[0]);
                             }
-                            catch
+                            catch (ArgumentNullException)
                             {
                                 throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                             }
@@ -159,7 +159,7 @@ namespace SystemExtensions.Copying
                                 var deepCopy = item.GetType().GetMethod("DeepCopy");
                                 copy[i][j] = (T)deepCopy.Invoke(item, new object[0]);
                             }
-                            catch
+                            catch (ArgumentNullException)
                             {
                                 throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                             }
@@ -213,7 +213,7 @@ namespace SystemExtensions.Copying
                                     var deepCopy = item.GetType().GetMethod("DeepCopy");
                                     copy[i][j][k] = (T)deepCopy.Invoke(item, new object[0]);
                                 }
-                                catch
+                                catch (ArgumentNullException)
                                 {
                                     throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                                 }
@@ -266,7 +266,7 @@ namespace SystemExtensions.Copying
                                     var deepCopy = item.GetType().GetMethod("DeepCopy");
                                     copy[i][j][k] = (T)deepCopy.Invoke(item, new object[0]);
                                 }
-                                catch
+                                catch (ArgumentNullException)
                                 {
                                     throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                                 }
@@ -332,7 +332,7 @@ namespace SystemExtensions.Copying
                                         var deepCopy = item.GetType().GetMethod("DeepCopy");
                                         copy[i][j][k][m] = (T)deepCopy.Invoke(item, new object[0]);
                                     }
-                                    catch
+                                    catch (ArgumentNullException)
                                     {
                                         throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                                     }
@@ -395,7 +395,7 @@ namespace SystemExtensions.Copying
                                         var deepCopy = item.GetType().GetMethod("DeepCopy");
                                         copy[i][j][k][m] = (T)deepCopy.Invoke(item, new object[0]);
                                     }
-                                    catch
+                                    catch (ArgumentNullException)
                                     {
                                         throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                                     }
@@ -468,7 +468,7 @@ namespace SystemExtensions.Copying
                                             var deepCopy = item.GetType().GetMethod("DeepCopy");
                                             copy[i][j][k][m][n] = (T)deepCopy.Invoke(item, new object[0]);
                                         }
-                                        catch
+                                        catch (ArgumentNullException)
                                         {
                                             throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                                         }
@@ -550,7 +550,7 @@ namespace SystemExtensions.Copying
                                             var deepCopy = item.GetType().GetMethod("DeepCopy");
                                             copy[i][j][k][m][n] = (T)deepCopy.Invoke(item, new object[0]);
                                         }
-                                        catch
+                                        catch (ArgumentNullException)
                                         {
                                             throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                                         }

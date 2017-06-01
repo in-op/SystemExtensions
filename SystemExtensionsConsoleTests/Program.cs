@@ -10,8 +10,8 @@ namespace CSharpExtrasConsoleTests
     {
         static void Main(string[] args)
         {
-            //Array5DPerformanceTest();
-            Array1DPerformanceTest();
+            Array5DPerformanceTest();
+            //Array1DPerformanceTest();
         }
 
 
@@ -64,7 +64,7 @@ namespace CSharpExtrasConsoleTests
         {
             Stopwatch sw = new Stopwatch();
 
-            int size = 12;
+            int size = 30;
             long val = 42L;
 
             long[][][][][] ints = JaggedArray.Create(size, size, size, size, size, val);
@@ -72,23 +72,9 @@ namespace CSharpExtrasConsoleTests
 
             sw.Reset();
             sw.Start();
-            for (int i = 0; i < 600; i++)
-            {
-                holder = ints.DeepCopy();
-            }
+            holder = ints.ParallelDeepCopy();
             sw.Stop();
-
-            sw.Reset();
-            sw.Start();
-            for (int i = 0; i < 600; i++)
-            {
-                holder = ints.ParallelDeepCopy();
-            }
-            sw.Stop();
-
-
-
-
+            Console.WriteLine("Multi-Threaded: " + sw.ElapsedTicks);
 
             sw.Reset();
             sw.Start();
@@ -96,11 +82,6 @@ namespace CSharpExtrasConsoleTests
             sw.Stop();
             Console.WriteLine("Single-Threaded: " + sw.ElapsedTicks);
 
-            sw.Reset();
-            sw.Start();
-            holder = ints.ParallelDeepCopy();
-            sw.Stop();
-            Console.WriteLine("Multi-Threaded: " + sw.ElapsedTicks);
 
             Console.ReadLine();
         }

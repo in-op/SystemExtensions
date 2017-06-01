@@ -30,7 +30,7 @@ namespace SystemExtensions.Copying
                             var deepCopy = item.GetType().GetMethod("DeepCopy");
                             copy.Add((T)deepCopy.Invoke(item, new object[0]));
                         }
-                        catch
+                        catch (ArgumentNullException)
                         {
                             throw new Exception("The List type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                         }

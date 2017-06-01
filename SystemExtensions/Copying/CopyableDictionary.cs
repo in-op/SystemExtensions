@@ -33,7 +33,7 @@ namespace SystemExtensions.Copying
                         }
                         catch (ArgumentNullException)
                         {
-                            throw new Exception("The value type " + typeof(TValue).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                            throw new NotImplementedException("The value type " + typeof(TValue).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                         }
                 }
                 else
@@ -47,7 +47,7 @@ namespace SystemExtensions.Copying
                         }
                         catch (ArgumentNullException)
                         {
-                            throw new Exception("The key type " + typeof(TKey).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                            throw new NotImplementedException("The key type " + typeof(TKey).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                         }
                     else
                         try
@@ -61,7 +61,7 @@ namespace SystemExtensions.Copying
                         }
                         catch (ArgumentNullException)
                         {
-                            throw new Exception("Both the key type " + typeof(TKey).Name + " and the value type " + typeof(TValue).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                            throw new NotImplementedException("Both the key type " + typeof(TKey).Name + " and the value type " + typeof(TValue).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                         }
                 }
             return copy;

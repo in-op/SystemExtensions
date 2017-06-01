@@ -32,7 +32,7 @@ namespace SystemExtensions.Copying
                         }
                         catch (ArgumentNullException)
                         {
-                            throw new Exception("The List type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                            throw new NotImplementedException("The List type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                         }
             return copy;
         }

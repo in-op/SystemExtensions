@@ -34,7 +34,7 @@ namespace SystemExtensions.Copying
                         }
                         catch (ArgumentNullException)
                         {
-                            throw new Exception("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
+                            throw new NotImplementedException("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                         }
             return copy;
         }

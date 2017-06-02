@@ -57,12 +57,12 @@ namespace SystemExtensions.Copying
             T[] copy = new T[x];
 
             if (typeof(T).IsValueType)
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     copy[i] = array[i];
                 });
             else
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     if (array[i] == null) copy[i] = default(T);
                     else
@@ -138,7 +138,7 @@ namespace SystemExtensions.Copying
             int x = array.Length;
             T[][] copy = new T[x][];
             if (typeof(T).IsValueType)
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     int y = array[i].Length;
                     copy[i] = new T[y];
@@ -146,7 +146,7 @@ namespace SystemExtensions.Copying
                         copy[i][j] = array[i][j];
                 });
             else
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     int y = array[i].Length;
                     copy[i] = new T[y];
@@ -236,7 +236,7 @@ namespace SystemExtensions.Copying
             int x = array.Length;
             T[][][] copy = new T[x][][];
             if (typeof(T).IsValueType)
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     int y = array[i].Length;
                     copy[i] = new T[y][];
@@ -249,7 +249,7 @@ namespace SystemExtensions.Copying
                     }
                 });
             else
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     int y = array[i].Length;
                     copy[i] = new T[y][];
@@ -356,7 +356,7 @@ namespace SystemExtensions.Copying
             int x = array.Length;
             T[][][][] copy = new T[x][][][];
             if (typeof(T).IsValueType)
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     int y = array[i].Length;
                     copy[i] = new T[y][][];
@@ -374,7 +374,7 @@ namespace SystemExtensions.Copying
                     }
                 });
             else
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     int y = array[i].Length;
                     copy[i] = new T[y][][];

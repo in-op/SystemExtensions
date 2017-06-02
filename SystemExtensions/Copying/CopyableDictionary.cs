@@ -21,7 +21,6 @@ namespace SystemExtensions.Copying
             var copy = new Dictionary<TKey, TValue>(dict.Count);
             foreach (KeyValuePair<TKey, TValue> kvp in dict)
                 if (typeof(TKey).IsValueType)
-                {
                     if (typeof(TValue).IsValueType)
                         copy.Add(kvp.Key, kvp.Value);
                     else
@@ -35,9 +34,7 @@ namespace SystemExtensions.Copying
                         {
                             throw new NotImplementedException("The value type " + typeof(TValue).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                         }
-                }
                 else
-                {
                     if (typeof(TValue).IsValueType)
                         try
                         {
@@ -63,7 +60,7 @@ namespace SystemExtensions.Copying
                         {
                             throw new NotImplementedException("Both the key type " + typeof(TKey).Name + " and the value type " + typeof(TValue).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                         }
-                }
+
             return copy;
         }
 

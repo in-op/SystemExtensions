@@ -2,6 +2,9 @@
 
 namespace SystemExtensions.Random
 {
+    /// <summary>
+    /// A method class for implementing NextInt64, which returns a random long number.
+    /// </summary>
     public static class RandomLong
     {
         /// <summary>

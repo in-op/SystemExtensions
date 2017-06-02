@@ -490,7 +490,8 @@ namespace SystemExtensions.Copying
 
 
         /// <summary>
-        /// Returns a deep copy of the calling array, creating multiple parts of the output array in parallel.
+        /// Returns a deep copy of the calling array,
+        /// creating multiple parts of the output array in parallel.
         /// </summary>
         /// <typeparam name="T">The array type.</typeparam>
         /// <param name="array">The calling array.</param>
@@ -501,7 +502,7 @@ namespace SystemExtensions.Copying
             T[][][][][] copy = new T[x][][][][];
 
             if (typeof(T).IsValueType)
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     int y = array[i].Length;
                     copy[i] = new T[y][][][];
@@ -525,7 +526,7 @@ namespace SystemExtensions.Copying
                 });
 
             else
-                System.Threading.Tasks.Parallel.For(0, x, (i) =>
+                ParallelNET35.Parallel.For(0, x, (i) =>
                 {
                     int y = array[i].Length;
                     copy[i] = new T[y][][][];

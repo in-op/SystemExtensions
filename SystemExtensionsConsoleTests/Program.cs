@@ -64,11 +64,11 @@ namespace CSharpExtrasConsoleTests
         {
             Stopwatch sw = new Stopwatch();
 
-            int size = 30;
-            long val = 42L;
+            int size = 14;
+            int val = 42;
 
-            long[][][][][] ints = JaggedArray.Create(size, size, size, size, size, val);
-            long[][][][][] holder;
+            int[][][][][] ints = JaggedArray.Create(size, size, size, size, size, val);
+            int[][][][][] holder;
 
             sw.Reset();
             sw.Start();

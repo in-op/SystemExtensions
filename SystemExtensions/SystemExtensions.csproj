@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Copying\CopyableArrays.cs" />
     <Compile Include="Copying\CopyableDictionary.cs" />
+    <Compile Include="Copying\CopyableHashSet.cs" />
     <Compile Include="Copying\CopyableList.cs" />
     <Compile Include="Copying\ICopyable.cs" />
     <Compile Include="JaggedArray.cs" />

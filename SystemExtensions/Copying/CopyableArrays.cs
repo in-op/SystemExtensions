@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace SystemExtensions.Copying
 {
@@ -24,18 +26,31 @@ namespace SystemExtensions.Copying
                     copy[i] = array[i];
             else
                 for (int i = 0; i < x; i++)
+                {
+                    Console.WriteLine("i = " + i);
                     if (array[i] == null) copy[i] = default(T);
                     else
                         try
                         {
                             object item = array[i];
+                            Console.WriteLine("item == null: " + (item == null));
                             var deepCopy = item.GetType().GetMethod("DeepCopy");
+                            Console.WriteLine("deepcopy == null: " + (deepCopy == null));
                             copy[i] = (T)deepCopy.Invoke(item, new object[0]);
+
+
+                            //copy[i] = (T)
+                            //    (array[i]
+                            //    .GetType()
+                            //    .GetMethod("DeepCopy")
+                            //    .Invoke(array[i], new object[0]));
                         }
                         catch (ArgumentNullException)
                         {
                             throw new NotImplementedException("The array type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() which returns a deep copy of the instance.");
                         }
+                }
+                    
             return copy;
         }
 

@@ -10,8 +10,29 @@ namespace CSharpExtrasConsoleTests
     {
         static void Main(string[] args)
         {
-            Array5DPerformanceTest();
+            //Array5DPerformanceTest();
             //Array1DPerformanceTest();
+            TestingDeepCopy();
+        }
+
+
+        private static void TestingDeepCopy()
+        {
+            var array = new List<int>[3]
+            {
+                new List<int>() { 1, 2, 3 },
+                new List<int>() { 4, 5, 6 },
+                new List<int>() { 7, 8, 9 }
+            };
+
+            var copy = array.DeepCopy();
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    if (copy[i][j] != array[i][j])
+                        Console.WriteLine("Failed");
+
+            Console.ReadKey();
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace SystemExtensions.Copying.Tests
 {
@@ -32,6 +33,23 @@ namespace SystemExtensions.Copying.Tests
             for (int i = 0; i < 3; i++)
                 if (array[i].x != copy[i].x)
                     Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void DeepCopyArrayWorksWithCopyabeList()
+        {
+            var array = new List<int>[3]
+            {
+                new List<int>() { 1, 2, 3 },
+                new List<int>() { 4, 5, 6 },
+                new List<int>() { 7, 8, 9 }
+            };
+
+            var copy = array.DeepCopy();
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    if (copy[i][j] != array[i][j])
+                        Assert.Fail();
         }
 
 

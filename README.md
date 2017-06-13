@@ -47,6 +47,13 @@ invoking the `func` delegate
 and assigning it to the return value.
 
 ### Copying
+Deep copying is the creation of
+a complete copy of any one instance,
+and which shares no mutable state with
+the original. This can be useful
+in a number of situations, including
+multithreaded applications.
+
 The `Copying` namespace defines
 `DeepCopy()` extension methods for the
 following collections:

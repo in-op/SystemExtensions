@@ -8,59 +8,76 @@ unnecessary holes
 ### Jagged Array
 The `JaggedArray` class provides
 static methods for initializing
-1D-5D arrays with various
-initial items. Arrays can be initialized
+1D-5D arrays with initial items.
+Arrays can be initialized
 with a given value type instance, 
 new instances of a class,
 or the return value of a `Func<T>`.
-Principle examples are given below.
-2D arrays are used in the examples
-for simplicity, be aware `Create`
-is overloaded to take anywhere between
-1-5 int parameters to define the length
-of each dimension.
+The examples given below are for
+2D arrays, but be aware they
+are overloaded for anywhere
+from 1-5 dimensions.
 ```c#
 JaggedArray.Create<T>(int x, int y)
 ```
-Returns a 2D array of lengths x, y.
+Returns a 2D array where the outer
+array is of length x, and each inner
+array is of length y.
 Each element is initialized to T's
 default value.
 ```c#
 JaggedArray.Create<T>(int x, int y, T val)
 ```
-Returns a 2D array of lengths x, y.
+Returns a 2D array where the outer
+array is of length x, and each inner
+array is of length y.
 If T is a value type, each element
-is initialized to the input val. 
+is initialized to the input val (all value types should be immutable!). 
 If T is an object type, each element
 is initialized to a new instance
 of T using the default constructor.
 ```c#
 JaggedArray.Create<T>(int x, int y, Func<T> func)
 ```
-Returns a 2D array of lengths x, y.
-Each element is initialized to
-the return value of `func`.
+Returns a 2D array where the outer
+array is of length x, and each inner
+array is of length y.
+Each element is initialized by
+invoking the `func`.
 
 ### Copying
 The `Copying` namespace defines
-extension methods for copying
-collections items, and an interface
-for producing deep copies.
+`DeepCopy()` extension methods for the
+following collections:
+* T[]
+* Dictionary<TKey, TValue>
+* HashSet<T>
+* List<T>
+
+It also defines an interface
+for producing deep copies
+for your own types:
 ```c#
 public interface ICopyable<T>
 {
     T DeepCopy()
 }
 ```
-Interface for making deep copies
-of an instance. Each supported
-collection defines an extension
-method with the same name and
-signature. Supported collections:
-* Array
-* Dictionary
-* HashSet
-* List<T>
+Make sure when your types implement
+`ICopyable` that the generic type T
+is set to the type itself (like
+`IEquatable`).
+
+Custom types that implement the `ICopyable`
+interface can interop with the 
+collections' `DeepCopy()` methods.
+If the collection's generic type is
+your custom type, it will safely execute
+`DeepCopy()`. If however you make a
+`List<MyTypeThatDoesntImplementDeepCopy>`,
+it will throw a NotImplementedException
+and warn you that your type does not
+include a definition for `DeepCopy`.
 
 ### Random
 The `Random` namespace provides

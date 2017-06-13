@@ -48,21 +48,23 @@ namespace SystemExtensions.Copying
         /// </summary>
         public static T[] DeepCopy<T>(this T[] array)
         {
+            Type typeofT = typeof(T);
             int x = array.Length;
             T[] copy = new T[x];
-            if (typeof(T).IsValueType)
+
+            if (typeofT.IsValueType)
                 for (int i = 0; i < x; i++)
                     copy[i] = array[i];
             else
             {
-                MethodInfo deepCopy = typeof(T).GetMethod("DeepCopy"); // defined in T class definition
+                MethodInfo deepCopy = typeofT.GetMethod("DeepCopy"); // defined in T class definition
 
                 if (deepCopy == null)
                 {
-                    if (typeof(T).IsGenericType) //anything but arrays
-                        deepCopy = GetMethodInfo(typeof(T)).MakeGenericMethod(typeof(T).GetGenericArguments());
-                    else if (typeof(T).IsArray) //arrays 
-                        deepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeof(T).GetElementType() });
+                    if (typeofT.IsGenericType) //anything but arrays
+                        deepCopy = GetMethodInfo(typeofT).MakeGenericMethod(typeofT.GetGenericArguments());
+                    else if (typeofT.IsArray) //arrays 
+                        deepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeofT.GetElementType() });
                     try
                     {
                         for (int i = 0; i < x; i++)
@@ -71,7 +73,7 @@ namespace SystemExtensions.Copying
                     }
                     catch (Exception)
                     {
-                        throw new NotImplementedException("The " + typeof(T).Name + " class must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                        throw new NotImplementedException("The " + typeofT.Name + " class must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                     }
                 }
                 else
@@ -101,19 +103,21 @@ namespace SystemExtensions.Copying
         {
             List<T> copy = new List<T>(list.Count);
             int count = list.Count;
-            if (typeof(T).IsValueType)
+            Type typeofT = typeof(T);
+
+            if (typeofT.IsValueType)
                 for (int i = 0; i < count; i++)
                     copy.Add(list[i]);
             else
             {
-                MethodInfo deepCopy = typeof(T).GetMethod("DeepCopy"); // defined in T class definition
+                MethodInfo deepCopy = typeofT.GetMethod("DeepCopy"); // defined in T class definition
 
                 if (deepCopy == null)
                 {
-                    if (typeof(T).IsGenericType) //anything but arrays
-                        deepCopy = GetMethodInfo(typeof(T)).MakeGenericMethod(typeof(T).GetGenericArguments());
-                    else if (typeof(T).IsArray) //arrays 
-                        deepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeof(T).GetElementType() });
+                    if (typeofT.IsGenericType) //anything but arrays
+                        deepCopy = GetMethodInfo(typeofT).MakeGenericMethod(typeofT.GetGenericArguments());
+                    else if (typeofT.IsArray) //arrays 
+                        deepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeofT.GetElementType() });
                     try
                     {
                         for (int i = 0; i < count; i++)
@@ -122,7 +126,7 @@ namespace SystemExtensions.Copying
                     }
                     catch (Exception)
                     {
-                        throw new NotImplementedException("The List type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                        throw new NotImplementedException("The List type " + typeofT.Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                     }
                 }
                 else
@@ -145,20 +149,21 @@ namespace SystemExtensions.Copying
         public static HashSet<T> DeepCopy<T>(this HashSet<T> hashset)
         {
             var copy = new HashSet<T>();
+            Type typeofT = typeof(T);
 
-            if (typeof(T).IsValueType)
+            if (typeofT.IsValueType)
                 foreach (T item in hashset)
                     copy.Add(item);
             else
             {
-                MethodInfo deepCopy = typeof(T).GetMethod("DeepCopy"); // defined in T class definition
+                MethodInfo deepCopy = typeofT.GetMethod("DeepCopy"); // defined in T class definition
 
                 if (deepCopy == null)
                 {
-                    if (typeof(T).IsGenericType) //anything but arrays
-                        deepCopy = GetMethodInfo(typeof(T)).MakeGenericMethod(typeof(T).GetGenericArguments());
-                    else if (typeof(T).IsArray) //arrays 
-                        deepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeof(T).GetElementType() });
+                    if (typeofT.IsGenericType) //anything but arrays
+                        deepCopy = GetMethodInfo(typeofT).MakeGenericMethod(typeofT.GetGenericArguments());
+                    else if (typeofT.IsArray) //arrays 
+                        deepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeofT.GetElementType() });
                     try
                     {
                         foreach (T element in hashset)
@@ -167,7 +172,7 @@ namespace SystemExtensions.Copying
                     }
                     catch (Exception)
                     {
-                        throw new NotImplementedException("The List type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                        throw new NotImplementedException("The List type " + typeofT.Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
                     }
                 }
                 else

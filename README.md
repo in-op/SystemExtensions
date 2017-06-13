@@ -15,9 +15,10 @@ new instances of a class,
 or the return value of a `Func<T>`.
 Principle examples are given below.
 2D arrays are used in the examples
-for simplicity, but know that they
-are principally the same for an 
-array of any supported dimensional size.
+for simplicity, be aware `Create`
+is overloaded to take anywhere between
+1-5 int parameters to define the length
+of each dimension.
 ```c#
 JaggedArray.Create<T>(int x, int y)
 ```

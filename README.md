@@ -13,9 +13,9 @@ Arrays can be initialized
 with a given value type instance, 
 new instances of a class,
 or the return value of a `Func<T>`.
-The examples given below are for
+Examples are given with
 2D arrays, but be aware they
-are overloaded for anywhere
+are overloaded to support anywhere
 from 1-5 dimensions.
 ```c#
 JaggedArray.Create<T>(int x, int y)

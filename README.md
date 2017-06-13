@@ -80,6 +80,11 @@ it will throw a NotImplementedException
 and warn you that your type does not
 include a definition for `DeepCopy`.
 
+All supported collections can also
+contain other supported collections
+as generic type parameters and `DeepCopy()`
+will execute correctly.
+
 ### Random
 The `Random` namespace provides
 extension methods for retrieving

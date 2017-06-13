@@ -8,15 +8,15 @@ unnecessary holes
 ### Jagged Array
 The `JaggedArray` class provides
 static methods for initializing
-1D-5D arrays with initial items.
+arrays of one to five dimensions with initial items.
 Arrays can be initialized
-with a given value type instance, 
-new instances of a class,
+with either a given value type instance, 
+a new instances of a class,
 or the return value of a `Func<T>`.
 Examples are given with
 2D arrays, but be aware they
-are overloaded to support anywhere
-from 1-5 dimensions.
+are overloaded to support arrays
+of one to five dimensions.
 ```c#
 JaggedArray.Create<T>(int x, int y)
 ```
@@ -33,9 +33,9 @@ array is of length x, and each inner
 array is of length y.
 If T is a value type, each element
 is initialized to the input val (all value types should be immutable!). 
-If T is an object type, each element
+If T is a reference type, each element
 is initialized to a new instance
-of T using the default constructor.
+of T using the types default constructor.
 ```c#
 JaggedArray.Create<T>(int x, int y, Func<T> func)
 ```
@@ -43,7 +43,8 @@ Returns a 2D array where the outer
 array is of length x, and each inner
 array is of length y.
 Each element is initialized by
-invoking the `func`.
+invoking the `func` delegate
+and assigning it to the return value.
 
 ### Copying
 The `Copying` namespace defines

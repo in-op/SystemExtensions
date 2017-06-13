@@ -48,7 +48,7 @@ for producing deep copies.
 ```c#
 public interface ICopyable<T>
 {
-  T DeepCopy()
+    T DeepCopy()
 }
 ```
 Interface for making deep copies

@@ -41,7 +41,7 @@ namespace SystemExtensions.Copying.Tests
         }
 
         [TestMethod()]
-        public void DeepCopyListWorksWithValues()
+        public void CopyableListWorksWithValues()
         {
             List<int> list = new List<int>(3) { 1, 2, 3 };
             List<int> copy = list.DeepCopy();
@@ -53,7 +53,7 @@ namespace SystemExtensions.Copying.Tests
         }
 
         [TestMethod()]
-        public void DeepCopyListWorksWithClass()
+        public void CopyableListWorksWithClass()
         {
             List<CopyableClass> list = new List<CopyableClass>(3)
             {
@@ -70,7 +70,7 @@ namespace SystemExtensions.Copying.Tests
 
 
         [TestMethod()]
-        public void DeepCopyListWorksWithClassWithNulls()
+        public void CopyableListWorksWithClassWithNulls()
         {
             List<CopyableClass> list = new List<CopyableClass>(5)
             {

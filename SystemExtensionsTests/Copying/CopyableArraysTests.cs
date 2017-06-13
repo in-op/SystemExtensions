@@ -28,15 +28,14 @@ namespace SystemExtensions.Copying.Tests
             {
                 new CopyableClass(1), new CopyableClass(2), new CopyableClass(3)
             };
-            CopyableClass[] copy;
-            copy = array.DeepCopy();
+            CopyableClass[] copy = array.DeepCopy();
             for (int i = 0; i < 3; i++)
                 if (array[i].x != copy[i].x)
                     Assert.Fail();
         }
 
         [TestMethod()]
-        public void DeepCopyArrayWorksWithCopyabeList()
+        public void DeepCopyArrayWorksWithListOfInt()
         {
             var array = new List<int>[3]
             {
@@ -57,8 +56,7 @@ namespace SystemExtensions.Copying.Tests
         public void DeepCopyArrayWorksWithValues()
         {
             int[] array = new int[3] { 1, 2, 3 };
-            int[] copy;
-            copy = array.DeepCopy();
+            int[] copy = array.DeepCopy();
             for (int i = 0; i < 3; i++)
                 if (array[i] != copy[i])
                     Assert.Fail();

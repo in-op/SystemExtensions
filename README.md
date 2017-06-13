@@ -74,7 +74,7 @@ collections' `DeepCopy()` methods.
 If the collection's generic type is
 your custom type, it will safely execute
 `DeepCopy()`. If however you make a
-`List<MyTypeThatDoesntImplementDeepCopy>`,
+`List<MyTypeThatDoesntImplementDeepCopy>` and call the extention method `DeepCopy()` on it,
 it will throw a NotImplementedException
 and warn you that your type does not
 include a definition for `DeepCopy`.

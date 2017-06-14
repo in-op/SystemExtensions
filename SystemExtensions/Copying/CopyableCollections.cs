@@ -73,32 +73,29 @@ namespace SystemExtensions.Copying
 
             if (typeof(ICopyable<T>).IsAssignableFrom(typeof(T)))
                 for (int i = 0; i < x; i++)
-                    if (array[i] == null) copy[i] = default(T);
+                    if (array[i] == null) copy[i] = array[i];
                     else copy[i] = ((ICopyable<T>)array[i]).DeepCopy();
 
-            else
-            {
-                if (typeof(T).IsValueType)
+            else if (typeof(T).IsValueType)
                     for (int i = 0; i < x; i++)
                         copy[i] = array[i];
 
-                else
-                {
-                    MethodInfo deepCopy = GetDeepCopy(typeof(T));
-                    if (deepCopy != null)
-                        try
-                        {
-                            for (int i = 0; i < x; i++)
-                                if (array[i] == null) copy[i] = array[i];
-                                else copy[i] = (T)deepCopy.Invoke(null, new object[] { array[i] });
-                        }
-                        catch (Exception)
-                        {
-                            throw new NotImplementedException("An class within " + typeof(T).Name + " did not implement ICopyable<T>.");
-                        }
+            else
+            {
+                MethodInfo deepCopy = GetDeepCopy(typeof(T));
+                if (deepCopy != null)
+                    try
+                    {
+                        for (int i = 0; i < x; i++)
+                            if (array[i] == null) copy[i] = array[i];
+                            else copy[i] = (T)deepCopy.Invoke(null, new object[] { array[i] });
+                    }
+                    catch (Exception)
+                    {
+                        throw new NotImplementedException("An class within " + typeof(T).Name + " did not implement ICopyable<T>.");
+                    }
 
-                    else throw new NotImplementedException("The " + typeof(T).Name + " class did not implement ICopyable<" + typeof(T).Name + ">.");
-                }
+                else throw new NotImplementedException("The " + typeof(T).Name + " class did not implement ICopyable<" + typeof(T).Name + ">.");
             }
 
             return copy;

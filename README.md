@@ -48,8 +48,8 @@ and assigning it to the return value.
 
 ### Copying
 Deep copying is the creation of
-a complete copy of any one instance,
-and which shares no mutable state with
+a completely new copy of any one instance,
+which shares no mutable state with
 the original. This can be useful
 in a number of situations, including
 multithreaded applications.
@@ -65,32 +65,79 @@ following collections:
 It also defines an interface
 for producing deep copies
 for your own types:
+
 ```c#
 public interface ICopyable<T>
 {
     T DeepCopy()
 }
 ```
+
 Make sure when your types implement
-`ICopyable` that the generic type T
+`ICopyable<T>` that the generic type `T`
 is set to the type itself (like
-`IEquatable`).
+`IEquatable<T>`). For example:
+
+```c#
+class Point : ICopyable<Point>
+{
+    public int x, y;
+    public Point(int x, int y) { this.x = x; this.y = y; }
+    public Point DeepCopy() { return new Point(x, y); }
+}
+```
 
 Custom types that implement the `ICopyable`
 interface can interop with the 
 collections' `DeepCopy()` methods.
 If the collection's generic type is
 your custom type, it will safely execute
-`DeepCopy()`. If however you make a
+`DeepCopy()`. For example:
+
+```c#
+static void main(string[] args)
+{
+    List<Point> list = new List<Point>(3)
+    {
+        new Point(1, 2),
+        new Point(10, 42),
+        new Point(-3, 6)
+    }
+    
+    List<Point> copy = list.DeepCopy();
+}
+```
+This code compiles and does not throw any errors.
+As long as your type implements the `ICopyable<T>`
+interface you are safe to deep copy collections
+which use your type as generic type parameters.
+This copy shares no state with the original,
+and each can be read from and written to independently.
+
+All supported collections can also
+contain other supported collections
+as generic type parameters. For example, instances of type
+`List<List<int[]>>` will execute `DeepCopy()`
+correctly.
+
+If however you make a
 `List<MyTypeThatDoesntImplementDeepCopy>` and call the extention method `DeepCopy()` on it,
 it will throw a NotImplementedException
 and warn you that your type does not
 include a definition for `DeepCopy`.
 
-All supported collections can also
-contain other supported collections
-as generic type parameters and `DeepCopy()`
-will execute correctly.
+You do not technically need to implement `ICopyable<T>`
+to safely interop with the collections' `DeepCopy()` extension methods.
+All they require is that your class definition supply a parameterless
+instance method `DeepCopy()` that
+returns an instance of the same type.
+However, you are encouraged to implement
+the interface for clarity and for
+interop with other, stricter code which
+may require the interface implementation.
+This laxity is an artefact of the library design,
+which empowers the collections' extension
+methods to call eachother.
 
 ### Random
 The `Random` namespace provides

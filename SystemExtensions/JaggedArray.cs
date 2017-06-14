@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SystemExtensions
 {
@@ -97,6 +98,23 @@ namespace SystemExtensions
                 output[i] = new T[y];
             return output;
         }
+
+        /// <summary>
+        /// Returns a new jagged 2D array where each inner array's length is specified.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="x"></param>
+        /// <param name="ys"></param>
+        /// <returns></returns>
+        public static T[][] Create<T>(int x, List<int> ys)
+        {
+            if (x != ys.Count) throw new ArgumentException("x was not equal to the Count property of ys.");
+            T[][] output = new T[x][];
+            for (int i = 0; i < x; i++)
+                output[i] = new T[ys[i]];
+            return output;
+        }
+        
 
         /// <summary>
         /// Returns a new 2D array of lengths x, y.  Each element is initialized to either val, if value type, or with new instances from the type's default constructor, if reference type.

@@ -22,7 +22,7 @@ namespace SystemExtensions.Copying.Tests
         }
 
         [TestMethod()]
-        public void DeepCopyArrayWorksWithClass()
+        public void DeepCopy1DArrayWorksWithClass()
         {
             CopyableClass[] array = new CopyableClass[3]
             {

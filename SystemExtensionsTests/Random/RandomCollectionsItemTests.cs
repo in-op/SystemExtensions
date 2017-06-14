@@ -6,13 +6,14 @@ namespace SystemExtensions.Random.Tests
     [TestClass()]
     public class RandomCollectionsItemTests
     {
+        private List<int> listInt = new List<int>(3) { 1, 2, 3 };
 
         [TestMethod()]
         public void RandomListItemIsWithinList()
         {
-            List<int> list = new List<int>(3) { 1, 2, 3 };
-            int rando = list.RandomItem(new System.Random());
-            if (!list.Contains(rando)) Assert.Fail();
+            if (!listInt.Contains(
+                listInt.RandomItem(new System.Random())))
+                Assert.Fail();
         }
 
         [TestMethod()]

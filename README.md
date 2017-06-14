@@ -59,8 +59,8 @@ The `Copying` namespace defines
 following collections:
 * T[]
 * Dictionary<TKey, TValue>
-* HashSet<T>
-* List<T>
+* HashSet\<T\>
+* List\<T\>
 
 It also defines an interface
 for producing deep copies
@@ -154,10 +154,10 @@ The principle method for retrieving
 a random item from the collection.
 All collections supporting
 this extension method:
-* Array
-* Dictionary
-* HashSet
-* List<T>
+* T[]
+* Dictionary<TKey, TValue>
+* HashSet\<T\>
+* List\<T\>
 ```c#
 long NextInt64(this System.Random rng)
 ```

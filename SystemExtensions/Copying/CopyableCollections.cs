@@ -77,8 +77,8 @@ namespace SystemExtensions.Copying
                     else copy[i] = ((ICopyable<T>)array[i]).DeepCopy();
 
             else if (typeof(T).IsValueType)
-                    for (int i = 0; i < x; i++)
-                        copy[i] = array[i];
+                for (int i = 0; i < x; i++)
+                    copy[i] = array[i];
 
             else
             {

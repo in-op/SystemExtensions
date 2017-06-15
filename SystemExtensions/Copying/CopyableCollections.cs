@@ -63,21 +63,21 @@ namespace SystemExtensions.Copying
         /// <summary>
         /// Returns a deep copy of the calling array.
         /// The array type must implement ICopyable,
-        /// be a value type, or be a collection supporting
+        /// be a value type, or be a type supporting
         /// the DeepCopy() extension.
         /// </summary>
         public static T[] DeepCopy<T>(this T[] array)
         {
-            int x = array.Length;
-            T[] copy = new T[x];
+            int length = array.Length;
+            T[] copy = new T[length];
 
             if (typeof(ICopyable<T>).IsAssignableFrom(typeof(T)))
-                for (int i = 0; i < x; i++)
+                for (int i = 0; i < length; i++)
                     if (array[i] == null) copy[i] = array[i];
                     else copy[i] = ((ICopyable<T>)array[i]).DeepCopy();
 
             else if (typeof(T).IsValueType)
-                for (int i = 0; i < x; i++)
+                for (int i = 0; i < length; i++)
                     copy[i] = array[i];
 
             else
@@ -86,7 +86,7 @@ namespace SystemExtensions.Copying
                 if (deepCopy != null)
                     try
                     {
-                        for (int i = 0; i < x; i++)
+                        for (int i = 0; i < length; i++)
                             if (array[i] == null) copy[i] = array[i];
                             else copy[i] = (T)deepCopy.Invoke(null, new object[] { array[i] });
                     }
@@ -108,50 +108,43 @@ namespace SystemExtensions.Copying
 
 
         /// <summary>
-        /// Returns a deep copy of the List.
-        /// If the List type T is a reference
-        /// type, it must implement a parameterless
-        /// instance method DeepCopy(), which returns
-        /// a deep copy of the instance. If T is
-        /// a value type, it must be immutable.
+        /// Returns a deep copy of the calling List&lt;T&gt;.
+        /// T must implement ICopyable, be a value type,
+        /// or be a type supporting the DeepCopy() extension.
         /// </summary>
         public static List<T> DeepCopy<T>(this List<T> list)
         {
-            List<T> copy = new List<T>(list.Count);
             int count = list.Count;
+            List<T> copy = new List<T>(count);
 
-            if (typeof(T).IsValueType)
+            if (typeof(ICopyable<T>).IsAssignableFrom(typeof(T)))
+                for (int i = 0; i < count; i++)
+                    if (list[i] == null) copy.Add(list[i]);
+                    else copy.Add(((ICopyable<T>)list[i]).DeepCopy());
+
+            else if (typeof(T).IsValueType)
                 for (int i = 0; i < count; i++)
                     copy.Add(list[i]);
+
             else
             {
-                MethodInfo deepCopy = null;
+                MethodInfo deepCopy = GetDeepCopy(typeof(T));
 
-                if (typeof(ICopyable<T>).IsAssignableFrom(typeof(T)))
-                    deepCopy = typeof(T).GetMethod("DeepCopy");
-
-                if (deepCopy == null)
-                {
-                    if (typeof(T).IsGenericType) //anything but arrays
-                        deepCopy = GetMethodInfo(typeof(T)).MakeGenericMethod(typeof(T).GetGenericArguments());
-                    else if (typeof(T).IsArray) //arrays 
-                        deepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeof(T).GetElementType() });
+                if (deepCopy != null)
                     try
                     {
                         for (int i = 0; i < count; i++)
-                            if (list[i] == null) copy.Add(default(T));
+                            if (list[i] == null) copy.Add(list[i]);
                             else copy.Add((T)deepCopy.Invoke(null, new object[] { list[i] }));
                     }
                     catch (Exception)
                     {
-                        throw new NotImplementedException("The List type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                        throw new NotImplementedException("An class within " + typeof(T).Name + " did not implement ICopyable<T>.");
                     }
-                }
-                else
-                    for (int i = 0; i < count; i++)
-                        if (list[i] == null) copy.Add(default(T));
-                        else copy.Add((T)deepCopy.Invoke(list[i], new object[0]));
+
+                else throw new NotImplementedException("The " + typeof(T).Name + " class did not implement ICopyable<" + typeof(T).Name + ">.");
             }
+
             return copy;
         }
 

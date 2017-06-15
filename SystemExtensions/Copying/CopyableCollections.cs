@@ -61,8 +61,8 @@ namespace SystemExtensions.Copying
 
 
         /// <summary>
-        /// Returns a deep copy of the calling array.
-        /// The array type must implement ICopyable,
+        /// Returns a deep copy of the calling array T[].
+        /// T must implement ICopyable&lt;T&gt;,
         /// be a value type, or be a type supporting
         /// the DeepCopy() extension.
         /// </summary>
@@ -109,7 +109,7 @@ namespace SystemExtensions.Copying
 
         /// <summary>
         /// Returns a deep copy of the calling List&lt;T&gt;.
-        /// T must implement ICopyable, be a value type,
+        /// T must implement ICopyable&lt;T&gt;, be a value type,
         /// or be a type supporting the DeepCopy() extension.
         /// </summary>
         public static List<T> DeepCopy<T>(this List<T> list)

@@ -92,7 +92,7 @@ namespace SystemExtensions.Copying
                     }
                     catch (Exception)
                     {
-                        throw new NotImplementedException("An class within " + typeof(T).Name + " did not implement ICopyable<T>.");
+                        throw new NotImplementedException("A class within " + typeof(T).Name + " did not implement ICopyable<T>.");
                     }
 
                 else throw new NotImplementedException("The " + typeof(T).Name + " class did not implement ICopyable<" + typeof(T).Name + ">.");
@@ -139,7 +139,7 @@ namespace SystemExtensions.Copying
                     }
                     catch (Exception)
                     {
-                        throw new NotImplementedException("An class within " + typeof(T).Name + " did not implement ICopyable<T>.");
+                        throw new NotImplementedException("A class within " + typeof(T).Name + " did not implement ICopyable<T>.");
                     }
 
                 else throw new NotImplementedException("The " + typeof(T).Name + " class did not implement ICopyable<" + typeof(T).Name + ">.");
@@ -186,7 +186,7 @@ namespace SystemExtensions.Copying
                     }
                     catch (Exception)
                     {
-                        throw new NotImplementedException("An class within " + typeof(T).Name + " did not implement ICopyable<T>.");
+                        throw new NotImplementedException("A class within " + typeof(T).Name + " did not implement ICopyable<T>.");
                     }
 
                 else throw new NotImplementedException("The " + typeof(T).Name + " class did not implement ICopyable<" + typeof(T).Name + ">.");
@@ -203,7 +203,9 @@ namespace SystemExtensions.Copying
 
 
         /// <summary>
-        /// Returns a deep copy of the calling Dictionary.
+        /// Returns a deep copy of the calling Dictionary&lt;TKey, TValue&gt;.
+        /// Both TKey and TValue must implement ICopyable, be a value type,
+        /// or be a type supporting the DeepCopy() extension.
         /// </summary>
         /// <typeparam name="TKey">The key type.</typeparam>
         /// <typeparam name="TValue">The value type.</typeparam>
@@ -212,105 +214,130 @@ namespace SystemExtensions.Copying
         public static Dictionary<TKey, TValue> DeepCopy<TKey, TValue>(this Dictionary<TKey, TValue> dict)
         {
             var copy = new Dictionary<TKey, TValue>(dict.Count);
-            Type typeofKey = typeof(TKey);
-            Type typeofValue = typeof(TValue);
 
-            if (typeofKey.IsValueType)
 
-                if (typeofValue.IsValueType)
+            if (typeof(ICopyable<TKey>).IsAssignableFrom(typeof(TKey)))
+
+                if (typeof(ICopyable<TValue>).IsAssignableFrom(typeof(TValue)))
 
                     foreach (KeyValuePair<TKey, TValue> kvp in dict)
-                        copy.Add(kvp.Key, kvp.Value);
+                        copy.Add(
+                            ((ICopyable<TKey>)kvp.Key).DeepCopy(),
+                            ((ICopyable<TValue>)kvp.Value).DeepCopy());
+
+                else if (typeof(TValue).IsValueType)
+
+                    foreach (KeyValuePair<TKey, TValue> kvp in dict)
+                        copy.Add(
+                            ((ICopyable<TKey>)kvp.Key).DeepCopy(),
+                            kvp.Value);
 
                 else
                 {
-                    MethodInfo valueDeepCopy = null;
+                    MethodInfo deepCopy = GetDeepCopy(typeof(TValue));
 
-                    if (typeof(ICopyable<TValue>).IsAssignableFrom(typeofValue))
-                        valueDeepCopy = typeofValue.GetMethod("DeepCopy");
-                    
-                    if (valueDeepCopy != null)
-                        foreach (KeyValuePair<TKey, TValue> kvp in dict)
-                            copy.Add(
-                                kvp.Key,
-                                (TValue)valueDeepCopy.Invoke(kvp.Value, new object[0] ));
+                    if (deepCopy != null)
+                        try
+                        {
+                            foreach (KeyValuePair<TKey, TValue> kvp in dict)
+                                copy.Add(
+                                    ((ICopyable<TKey>)kvp.Key).DeepCopy(),
+                                    (TValue)deepCopy.Invoke(null, new object[1] { kvp.Value }));
+                        }
+                        catch (Exception)
+                        {
+                            throw new NotImplementedException("One of the types within the Dictionary did not implement ICopyable<T>.");
+                        }
 
-                    else
-                    {
-                        if (typeofValue.IsGenericType) //anything but arrays
-                            valueDeepCopy = GetMethodInfo(typeofValue).MakeGenericMethod(typeofValue.GetGenericArguments());
-                        else if (typeofValue.IsArray) //arrays 
-                            valueDeepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeofValue.GetElementType() });
+                    else throw new NotImplementedException("The " + typeof(TValue).Name + " class did not implement ICopyable<" + typeof(TValue).Name + ">.");
+                }
 
+
+            else if (typeof(TKey).IsValueType)
+
+                if (typeof(ICopyable<TValue>).IsAssignableFrom(typeof(TValue)))
+
+                    foreach (KeyValuePair<TKey, TValue> kvp in dict)
+                        copy.Add(
+                            kvp.Key,
+                            ((ICopyable<TValue>)kvp.Value).DeepCopy());
+
+                else if (typeof(TValue).IsValueType)
+
+                    foreach (KeyValuePair<TKey, TValue> kvp in dict)
+                        copy.Add(
+                            kvp.Key,
+                            kvp.Value);
+
+                else
+                {
+                    MethodInfo deepCopy = GetDeepCopy(typeof(TValue));
+
+                    if (deepCopy != null)
                         try
                         {
                             foreach (KeyValuePair<TKey, TValue> kvp in dict)
                                 copy.Add(
                                     kvp.Key,
-                                    (TValue)valueDeepCopy.Invoke(null, new object[] { kvp.Value }));
+                                    (TValue)deepCopy.Invoke(null, new object[1] { kvp.Value }));
                         }
                         catch (Exception)
                         {
-                            throw new NotImplementedException("The value type " + typeofValue.Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                            throw new NotImplementedException("One of the types within the Dictionary did not implement ICopyable<T>.");
+                        }
+
+                    else throw new NotImplementedException("The " + typeof(TValue).Name + " class did not implement ICopyable<" + typeof(TValue).Name + ">.");
+                }
+            
+            else //TKey has DeepCopy() extension (or not)
+            {
+                MethodInfo keyDeepCopy = GetDeepCopy(typeof(TKey));
+
+                if (keyDeepCopy != null)
+                    try
+                    {
+                        if (typeof(ICopyable<TValue>).IsAssignableFrom(typeof(TValue)))
+
+                            foreach (KeyValuePair<TKey, TValue> kvp in dict)
+                                copy.Add(
+                                    (TKey)keyDeepCopy.Invoke(null, new object[1] { kvp.Key }),
+                                    ((ICopyable<TValue>)kvp.Value).DeepCopy());
+
+                        else if (typeof(TValue).IsValueType)
+
+                            foreach (KeyValuePair<TKey, TValue> kvp in dict)
+                                copy.Add(
+                                    (TKey)keyDeepCopy.Invoke(null, new object[1] { kvp.Key }),
+                                    kvp.Value);
+
+                        else
+                        {
+                            MethodInfo deepCopy = GetDeepCopy(typeof(TValue));
+
+                            if (deepCopy != null)
+                                try
+                                {
+                                    foreach (KeyValuePair<TKey, TValue> kvp in dict)
+                                        copy.Add(
+                                            (TKey)keyDeepCopy.Invoke(null, new object[1] { kvp.Key }),
+                                            (TValue)deepCopy.Invoke(null, new object[1] { kvp.Value }));
+                                }
+                                catch (Exception)
+                                {
+                                    throw new NotImplementedException("One of the types within the Dictionary did not implement ICopyable<T>.");
+                                }
+
+                            else throw new NotImplementedException("The " + typeof(TValue).Name + " class did not implement ICopyable<" + typeof(TValue).Name + ">.");
                         }
                     }
-                        
-                    
-                }
+                    catch (Exception)
+                    {
+                        throw new NotImplementedException("One of the types within the Dictionary did not implement ICopyable<T>.");
+                    }
 
-            else
-                if (typeofValue.IsValueType)
-                {
-                    MethodInfo keyDeepCopy = typeofKey.GetMethod("DeepCopy"); // defined in TKey class definition
-
-                    if (keyDeepCopy == null)
-                        if (typeofValue.IsGenericType) //anything but arrays
-                            keyDeepCopy = GetMethodInfo(typeofKey).MakeGenericMethod(typeofKey.GetGenericArguments());
-                        else if (typeofValue.IsArray) //arrays 
-                            keyDeepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeofKey.GetElementType() });
-
-                    foreach (KeyValuePair<TKey, TValue> kvp in dict)
-                        try
-                        {
-                            copy.Add((TKey)keyDeepCopy.Invoke(null, new object[] { kvp.Key }), kvp.Value);
-                        }
-                        catch (Exception)
-                        {
-                            throw new NotImplementedException("The key type " + typeofValue.Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
-                        }
-                }
-
-                else
-                {
-                    MethodInfo valueDeepCopy = typeofValue.GetMethod("DeepCopy"); // defined in TValue class definition
-                    if (valueDeepCopy == null)
-                        if (typeofValue.IsGenericType) //anything but arrays
-                            valueDeepCopy = GetMethodInfo(typeofValue).MakeGenericMethod(typeofValue.GetGenericArguments());
-                        else if (typeofValue.IsArray) //arrays 
-                            valueDeepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeofValue.GetElementType() });
-
-                    MethodInfo keyDeepCopy = typeofKey.GetMethod("DeepCopy"); // defined in TKey class definition
-                    if (keyDeepCopy == null)
-                        if (typeofValue.IsGenericType) //anything but arrays
-                            keyDeepCopy = GetMethodInfo(typeofKey).MakeGenericMethod(typeofKey.GetGenericArguments());
-                        else if (typeofValue.IsArray) //arrays 
-                            keyDeepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeofKey.GetElementType() });
-
-                try
-                {
-                    foreach (KeyValuePair<TKey, TValue> kvp in dict)
-                        copy.Add(
-                                (TKey)keyDeepCopy.Invoke(null, new object[] { kvp.Key }),
-                                (TValue)valueDeepCopy.Invoke(null, new object[] { kvp.Value }));
-                }
-
-                catch (Exception)
-                {
-                    throw new NotImplementedException("Both the key type " + typeofKey.Name + " and the value type " + typeofValue.Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
-                }
+                else throw new NotImplementedException("The " + typeof(TKey).Name + " class did not implement ICopyable<" + typeof(TKey).Name + ">.");
 
             }
-
 
 
             return copy;

@@ -123,8 +123,9 @@ correctly.
 If however you make a
 `List<MyTypeThatDoesntImplementDeepCopy>` and call the extention method `DeepCopy()` on it,
 it will throw a NotImplementedException
-and warn you that your type does not
-include a definition for `DeepCopy`.
+at runtime and warn you that your type does not
+implement `ICopyable`.
+
 
 ### Random
 The `Random` namespace provides

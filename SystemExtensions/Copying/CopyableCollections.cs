@@ -8,30 +8,9 @@ namespace SystemExtensions.Copying
 
     public static class CopyableCollections
     {
+
         private static readonly MethodInfo[] methods = typeof(CopyableCollections).GetMethods();
-
-        private static MethodInfo ArrayMethodInfo
-        {
-            get
-            {
-                return methods[0];
-            }
-        }
-
-        private static MethodInfo GetMethodInfo(Type genericType)
-        {
-            switch (genericType.GetGenericTypeDefinition().FullName)
-            {
-                case "System.Collections.Generic.List`1":
-                    return methods[1];
-                case "System.Collections.Generic.HashSet`1":
-                    return methods[2];
-                case "System.Collections.Generic.Dictionary`2":
-                    return methods[3];
-                default:
-                    return null;
-            }
-        }
+        
 
         private static MethodInfo GetDeepCopy(Type type)
         {

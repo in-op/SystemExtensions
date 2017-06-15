@@ -52,7 +52,13 @@ a completely new copy of any one instance,
 which shares no mutable state with
 the original. This can be useful
 in a number of situations, including
-multithreaded applications.
+multithreaded applications. However,
+implementing deep copy methods can
+be confusing and painful, depending
+on the complexity of the objects
+you copy.
+The `SystemExtensions.Copying`
+namespace was created to ease that pain.
 
 The `Copying` namespace defines
 `DeepCopy()` extension methods for the

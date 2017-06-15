@@ -152,49 +152,46 @@ namespace SystemExtensions.Copying
 
 
         /// <summary>
-        /// Returns a deep copy of the HashSet. T must be an immutable value type, else implement an instance method DeepCopy().
+        /// Returns a deep copy of the HashSet&lt;T&gt;.
+        /// T must implement ICopyable&lt;T&gt;, be a value type,
+        /// or be a type supporting the DeepCopy() extension.
         /// </summary>
-        /// <typeparam name="T">The type of the HashSet items.</typeparam>
-        /// <param name="hashset">The calling HashSet.</param>
-        /// <returns>A deep copy of the HashSet.</returns>
+        /// <typeparam name="T">The type of the HashSet&lt;T&gt; items.</typeparam>
+        /// <param name="hashset">The calling HashSet&lt;T&gt;.</param>
+        /// <returns>A deep copy of the HashSet&lt;T&gt;.</returns>
         public static HashSet<T> DeepCopy<T>(this HashSet<T> hashset)
         {
-            var copy = new HashSet<T>();
+            int count = hashset.Count;
+            HashSet<T> copy = new HashSet<T>();
 
-            if (typeof(T).IsValueType)
-                foreach (T item in hashset)
-                    copy.Add(item);
+            if (typeof(ICopyable<T>).IsAssignableFrom(typeof(T)))
+                foreach (T element in hashset)
+                    if (element == null) copy.Add(element);
+                    else copy.Add(((ICopyable<T>)element).DeepCopy());
+
+            else if (typeof(T).IsValueType)
+                foreach (T element in hashset)
+                    copy.Add(element);
+
             else
             {
-                MethodInfo deepCopy = null;
-
-                if (typeof(ICopyable<T>).IsAssignableFrom(typeof(T)))
-                    deepCopy = typeof(T).GetMethod("DeepCopy");
+                MethodInfo deepCopy = GetDeepCopy(typeof(T));
 
                 if (deepCopy != null)
-                    foreach (T element in hashset)
-                        if (element == null) copy.Add(default(T));
-                        else copy.Add((T)deepCopy.Invoke(element, new object[0]));
-
-                else
-                {
-                    if (typeof(T).IsGenericType) //anything but arrays
-                        deepCopy = GetMethodInfo(typeof(T)).MakeGenericMethod(typeof(T).GetGenericArguments());
-                    else if (typeof(T).IsArray) //arrays 
-                        deepCopy = ArrayMethodInfo.MakeGenericMethod(new[] { typeof(T).GetElementType() });
                     try
                     {
                         foreach (T element in hashset)
-                            if (element == null) copy.Add(default(T));
+                            if (element == null) copy.Add(element);
                             else copy.Add((T)deepCopy.Invoke(null, new object[] { element }));
                     }
                     catch (Exception)
                     {
-                        throw new NotImplementedException("The List type " + typeof(T).Name + " must implement a parameterless instance method DeepCopy() that returns a deep copy of the instance.");
+                        throw new NotImplementedException("An class within " + typeof(T).Name + " did not implement ICopyable<T>.");
                     }
-                }
-                    
+
+                else throw new NotImplementedException("The " + typeof(T).Name + " class did not implement ICopyable<" + typeof(T).Name + ">.");
             }
+
             return copy;
         }
 

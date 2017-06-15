@@ -126,19 +126,6 @@ it will throw a NotImplementedException
 and warn you that your type does not
 include a definition for `DeepCopy`.
 
-You do not technically need to implement `ICopyable<T>`
-to safely interop with the collections' `DeepCopy()` extension methods.
-All they require is that your class definition supply a parameterless
-instance method `DeepCopy()` that
-returns an instance of the same type.
-However, you are encouraged to implement
-the interface for clarity and for
-interop with other, stricter code which
-may require the interface implementation.
-This laxity is an artefact of the library design,
-which empowers the collections' extension
-methods to call eachother.
-
 ### Random
 The `Random` namespace provides
 extension methods for retrieving

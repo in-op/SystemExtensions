@@ -73,10 +73,7 @@ public interface ICopyable<T>
 }
 ```
 
-Make sure when your types implement
-`ICopyable<T>` that the generic type `T`
-is set to the type itself (like
-`IEquatable<T>`). For example:
+You can implement it like this:
 
 ```c#
 class Point : ICopyable<Point>
@@ -89,7 +86,7 @@ class Point : ICopyable<Point>
 
 Custom types that implement the `ICopyable`
 interface can interop with the 
-collections' `DeepCopy()` methods.
+collections' `DeepCopy()` extension methods.
 If the collection's generic type is
 your custom type, it will safely execute
 `DeepCopy()`. For example:
@@ -117,10 +114,10 @@ and each can be read from and written to independently.
 All supported collections can also
 contain other supported collections
 as generic type parameters. For example, instances of type
-`List<List<int[]>>` will execute `DeepCopy()`
-correctly.
+`List<HashSet<Point[]>>` will execute `DeepCopy()`
+correctly (please never define anything as that type).
 
-If however you make a
+If, however, you make a
 `List<MyTypeThatDoesntImplementDeepCopy>` and call the extention method `DeepCopy()` on it,
 it will throw a NotImplementedException
 at runtime and warn you that your type does not

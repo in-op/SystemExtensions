@@ -47,16 +47,29 @@ invoking the `func` delegate
 and assigning it to the return value.
 
 ### Copying
+The `SystemExtensions.Copying`
+namespace was created to facilitate
+the implementation of creating
+deep copies of your custom types.
 Deep copying is the creation of
-a completely new copy of any one instance,
-which shares no mutable state with
-the original. This can be useful
+an instance whose fields contain
+the exact same values as some
+original instance, but the two
+instances share no mutable state.
+This can be useful
 in a number of situations, including
-multithreaded applications.
+multithreaded applications. However,
+implementing deep copy methods can
+be confusing and painful, depending
+on the complexity of the objects
+you copy. Deep copying is easy
+when the state is perfectly immutable,
+but tricky when you have objects
+within objects and both have mutable state.
 
-The `Copying` namespace defines
+The `Copying` namespace supports
 `DeepCopy()` extension methods for the
-following collections:
+following types:
 * T[]
 * Dictionary<TKey, TValue>
 * HashSet\<T\>
@@ -64,7 +77,7 @@ following collections:
 
 It also defines an interface
 for producing deep copies
-for your own types:
+for your custom types:
 
 ```c#
 public interface ICopyable<T>
@@ -73,10 +86,7 @@ public interface ICopyable<T>
 }
 ```
 
-Make sure when your types implement
-`ICopyable<T>` that the generic type `T`
-is set to the type itself (like
-`IEquatable<T>`). For example:
+You can implement it like this:
 
 ```c#
 class Point : ICopyable<Point>
@@ -88,9 +98,9 @@ class Point : ICopyable<Point>
 ```
 
 Custom types that implement the `ICopyable`
-interface can interop with the 
-collections' `DeepCopy()` methods.
-If the collection's generic type is
+interface can interop with any of the supported
+types' `DeepCopy()` extension methods.
+If the supported type's generic type is
 your custom type, it will safely execute
 `DeepCopy()`. For example:
 
@@ -109,35 +119,37 @@ static void main(string[] args)
 ```
 This code compiles and does not throw any errors.
 As long as your type implements the `ICopyable<T>`
-interface you are safe to deep copy collections
+interface you are safe to deep copy any of
+the supported generic types
 which use your type as generic type parameters.
-This copy shares no state with the original,
-and each can be read from and written to independently.
 
-All supported collections can also
-contain other supported collections
+It is important to recognize where your
+types are mutable and immutable,
+and deep copy appropriately.  All the
+built-in value types (`bool`, `int`, etc.) are safe to simply
+assign directly to the copy.
+If you have objects with other objects in their fields,
+simply define deep copy methods for the inner objects.
+Then when defining `DeepCopy()` for the containing type,
+simply assign the copy's field to: `originalObject.DeepCopy()`.
+This makes deep copying as simple
+as walking through the fields of your object
+and assigning data either directly from the original,
+when the type is immutable, or directly 
+from a `DeepCopy()` invocation, when the type is mutable.
+
+All supported types can also
+contain other supported types
 as generic type parameters. For example, instances of type
-`List<List<int[]>>` will execute `DeepCopy()`
-correctly.
+`List<HashSet<Point[]>>` will execute `DeepCopy()`
+correctly (please never define anything as that type).
 
-If however you make a
+If, however, you make a
 `List<MyTypeThatDoesntImplementDeepCopy>` and call the extention method `DeepCopy()` on it,
 it will throw a NotImplementedException
-and warn you that your type does not
-include a definition for `DeepCopy`.
+at runtime and warn you that your type does not
+implement `ICopyable`.
 
-You do not technically need to implement `ICopyable<T>`
-to safely interop with the collections' `DeepCopy()` extension methods.
-All they require is that your class definition supply a parameterless
-instance method `DeepCopy()` that
-returns an instance of the same type.
-However, you are encouraged to implement
-the interface for clarity and for
-interop with other, stricter code which
-may require the interface implementation.
-This laxity is an artefact of the library design,
-which empowers the collections' extension
-methods to call eachother.
 
 ### Random
 The `Random` namespace provides

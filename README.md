@@ -123,6 +123,21 @@ interface you are safe to deep copy any of
 the supported generic types
 which use your type as generic type parameters.
 
+It is important to recognize where your
+types are mutable and immutable,
+and deep copy appropriately.  All the
+built-in value types (`bool`, `int`, etc.) are safe to simply
+assign directly to the copy.
+If you have objects with other objects in their fields,
+simply define deep copy methods for the inner objects.
+Then when defining `DeepCopy()` for the containing type,
+simply assign the copy's field to: `originalObject.DeepCopy()`.
+This makes deep copying as simple
+as walking through the fields of your object
+and assigning data either directly from the original,
+when the type is immutable, or directly 
+from a `DeepCopy()` invocation, when the type is mutable.
+
 All supported types can also
 contain other supported types
 as generic type parameters. For example, instances of type

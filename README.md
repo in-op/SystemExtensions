@@ -67,7 +67,7 @@ when the state is perfectly immutable,
 but tricky when you have objects
 within objects and both have mutable state.
 
-The `Copying` namespace defines
+The `Copying` namespace supports
 `DeepCopy()` extension methods for the
 following types:
 * T[]
@@ -77,7 +77,7 @@ following types:
 
 It also defines an interface
 for producing deep copies
-for your own types:
+for your custom types:
 
 ```c#
 public interface ICopyable<T>
@@ -98,9 +98,9 @@ class Point : ICopyable<Point>
 ```
 
 Custom types that implement the `ICopyable`
-interface can interop with any of the 
+interface can interop with any of the supported
 types' `DeepCopy()` extension methods.
-If the collection's generic type is
+If the supported type's generic type is
 your custom type, it will safely execute
 `DeepCopy()`. For example:
 

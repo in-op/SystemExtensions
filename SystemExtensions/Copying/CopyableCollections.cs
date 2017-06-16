@@ -14,7 +14,8 @@ namespace SystemExtensions.Copying
 
         private static MethodInfo GetDeepCopy(Type type)
         {
-            if (type.IsArray)
+            if (type.IsArray &&
+                type.GetArrayRank() == 1)
                 return methods[0].MakeGenericMethod(new[] { type.GetElementType() });
 
             if (type.IsGenericType)

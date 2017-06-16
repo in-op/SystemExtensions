@@ -47,22 +47,29 @@ invoking the `func` delegate
 and assigning it to the return value.
 
 ### Copying
+The `SystemExtensions.Copying`
+namespace was created to facilitate
+the implementation of creating
+deep copies of your custom types.
 Deep copying is the creation of
-a completely new copy of any one instance,
-which shares no mutable state with
-the original. This can be useful
+an instance whose fields contain
+the exact same values as some
+original instance, but the two
+instances share no mutable state.
+This can be useful
 in a number of situations, including
 multithreaded applications. However,
 implementing deep copy methods can
 be confusing and painful, depending
 on the complexity of the objects
-you copy.
-The `SystemExtensions.Copying`
-namespace was created to ease that pain.
+you copy. Deep copying is easy
+when the state is perfectly immutable,
+but tricky when you have objects
+within objects and both have mutable state.
 
 The `Copying` namespace defines
 `DeepCopy()` extension methods for the
-following collections:
+following types:
 * T[]
 * Dictionary<TKey, TValue>
 * HashSet\<T\>
@@ -91,8 +98,8 @@ class Point : ICopyable<Point>
 ```
 
 Custom types that implement the `ICopyable`
-interface can interop with the 
-collections' `DeepCopy()` extension methods.
+interface can interop with any of the 
+types' `DeepCopy()` extension methods.
 If the collection's generic type is
 your custom type, it will safely execute
 `DeepCopy()`. For example:
@@ -112,13 +119,12 @@ static void main(string[] args)
 ```
 This code compiles and does not throw any errors.
 As long as your type implements the `ICopyable<T>`
-interface you are safe to deep copy collections
+interface you are safe to deep copy any of
+the supported generic types
 which use your type as generic type parameters.
-This copy shares no state with the original,
-and each can be read from and written to independently.
 
-All supported collections can also
-contain other supported collections
+All supported types can also
+contain other supported types
 as generic type parameters. For example, instances of type
 `List<HashSet<Point[]>>` will execute `DeepCopy()`
 correctly (please never define anything as that type).

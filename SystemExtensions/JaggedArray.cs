@@ -9,11 +9,6 @@ namespace SystemExtensions
     /// </summary>
     public static class JaggedArray
     {
-        //===============================================================================
-        //                                1D ARRAYS
-        //===============================================================================
-
-
         /// <summary>
         /// Returns a new 1D array of length x. Each element is initialized to T's default value.
         /// </summary>
@@ -52,15 +47,11 @@ namespace SystemExtensions
                 output[i] = func.Invoke();
             return output;
         }
-
-
-
-
-
-
-        //===============================================================================
-        //                                2D ARRAYS
-        //===============================================================================
+        
+        
+        
+        
+        
         
         /// <summary>
         /// Returns a new 2D array of lengths x, y. Each element is initialized to T's default value.
@@ -76,7 +67,6 @@ namespace SystemExtensions
                 output[i] = new T[y];
             return output;
         }
-        
 
         /// <summary>
         /// Returns a new 2D array of lengths x, y.  Each element is initialized to val.
@@ -124,16 +114,8 @@ namespace SystemExtensions
 
 
 
-
-
-
-
-
-
-        //===============================================================================
-        //                                3D ARRAYS
-        //===============================================================================
-
+        
+        
         /// <summary>
         /// Returns a new 3D array of lengths x, y, z. Each element is initialized to T's default value.
         /// </summary>
@@ -210,13 +192,8 @@ namespace SystemExtensions
 
 
 
-
-
-
-        //===============================================================================
-        //                                4D ARRAYS
-        //===============================================================================
-
+        
+        
         /// <summary>
         /// Returns a new 4D array of lengths x, y, z, a. Each element is initialized to T's default value.
         /// </summary>
@@ -309,13 +286,8 @@ namespace SystemExtensions
 
 
 
-
-
-        //===============================================================================
-        //                                5D ARRAYS
-        //===============================================================================
-
-
+        
+        
         /// <summary>
         /// Returns a new 5D array of lengths x, y, z, a, b. Each element is initialized to T's default value.
         /// </summary>

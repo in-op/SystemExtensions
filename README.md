@@ -18,7 +18,7 @@ This class contains one overloaded method,
 `JaggedArray.Create`.
 All overloads allow you to generate
 jagged arrays with specified lengths
-for arrays at each dimension.
+for arrays in each dimension.
 
 ```c#
 T[][][] JaggedArray.Create<T>(

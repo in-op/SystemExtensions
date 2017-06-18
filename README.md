@@ -6,45 +6,90 @@ unnecessary holes
 
 # API
 ### Jagged Array
-The `JaggedArray` class provides
-static methods for initializing
-arrays of one to five dimensions with initial items.
-Arrays can be initialized
-with either a given value type instance, 
-a new instances of a class,
-or the return value of a `Func<T>`.
-Examples are given with
-2D arrays, but be aware they
-are overloaded to support arrays
-of one to five dimensions.
+The `JaggedArray` class was created to easily
+initialize jagged arrays (arrays of arrays) of multiple
+dimensions (not to be confused with multidimensional arrays).
+Jagged arrays are generally faster to access
+than multidimensional arrays, but initializing jagged arrays
+is a cumbersome process in the normal language compared
+with multidimensional arrays.
+
+This class contains one overloaded method,
+`JaggedArray.Create`.
+All overloads allow you to generate
+jagged arrays with specified lengths
+for arrays at each dimension.
+
 ```c#
-JaggedArray.Create<T>(int x, int y)
+T[][][] JaggedArray.Create<T>(
+    int length1D,
+    int length2D,
+    int length3D)
 ```
-Returns a 2D array where the outer
-array is of length x, and each inner
-array is of length y.
-Each element is initialized to T's
-default value.
+
+Generating
+arrays like this initializes each element
+to the default value.
+An initial value can also
+be specified explicitly, either directly as an argument
+(only if it's a value type):
+
 ```c#
-JaggedArray.Create<T>(int x, int y, T val)
+T[][][] JaggedArray.Create<T>(
+    int length1D,
+    int length2D,
+    int length3D
+    T val)
+    where T : struct
 ```
-Returns a 2D array where the outer
-array is of length x, and each inner
-array is of length y.
-If T is a value type, each element
-is initialized to the input val (all value types should be immutable!). 
-If T is a reference type, each element
-is initialized to a new instance
-of T using the types default constructor.
+
+or indirectly as the
+return value of a func argument:
+
 ```c#
-JaggedArray.Create<T>(int x, int y, Func<T> func)
+T[][][] JaggedArray.Create<T>(
+    int length1D,
+    int length2D,
+    int length3D
+    Func<T> func)
 ```
-Returns a 2D array where the outer
-array is of length x, and each inner
-array is of length y.
-Each element is initialized by
-invoking the `func` delegate
-and assigning it to the return value.
+
+This allows the
+flexibility to construct objects, set random
+numbers, or do whatever you'd like in your array
+elements during initialization.
+Jagged arrays between
+one and five dimensions, T[] to T[][][][][],
+are currently supported. Note
+that all arrays in each dimension
+must be the same length. This means
+you can't have a jagged array like this:
+
+```c#
+int[][] array = new int[3][] 
+{
+    new int[1] { 42 },
+    new int[3] { 100, 101, 102 },
+    new int[2] { 56, -15 }
+}
+```
+
+where the lengths of inner arrays differ.
+Sometimes this is useful, such as when storing
+large amounts of data. Support is given for specifying
+individual lengths for whatever is the final dimension
+of the array:
+
+```c#
+T[][][] JaggedArray.Create<T>(
+    int length1D,
+    int length2D,
+    int[] lengths3D)
+```
+
+If you require jagged arrays with varying lengths
+in multiple dimensions, the content is probably
+complex enough to warrant manual initialization.
 
 ### Copying
 The `SystemExtensions.Copying`

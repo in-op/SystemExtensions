@@ -4,15 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C975F5F0-272B-402F-AD69-E9576660B88A}</ProjectGuid>
+    <ProjectGuid>{F0C0C870-2CCF-485B-AE15-37DE24DD2727}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SystemExtensions</RootNamespace>
-    <AssemblyName>SystemExtensions</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <RootNamespace>SystemExtensionsNET35</RootNamespace>
+    <AssemblyName>SystemExtensionsNET35</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,20 +28,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>default</LangVersion>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\SystemExtensions.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity 5.5 Compatible|AnyCPU'">
-    <OutputPath>bin\Unity 5.5 Compatible\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>default</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -55,14 +38,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Copying\CopyableCollections.cs" />
-    <Compile Include="Copying\ICopyable.cs" />
-    <Compile Include="JaggedArray.cs" />
+    <Compile Include="..\SystemExtensions\Copying\CopyableCollections.cs">
+      <Link>Copying\CopyableCollections.cs</Link>
+    </Compile>
+    <Compile Include="..\SystemExtensions\Copying\ICopyable.cs">
+      <Link>Copying\ICopyable.cs</Link>
+    </Compile>
+    <Compile Include="..\SystemExtensions\JaggedArray.cs">
+      <Link>JaggedArray.cs</Link>
+    </Compile>
+    <Compile Include="..\SystemExtensions\Random\RandomCollectionsItem.cs">
+      <Link>Random\RandomCollectionsItem.cs</Link>
+    </Compile>
+    <Compile Include="..\SystemExtensions\Random\RandomInt64.cs">
+      <Link>Random\RandomInt64.cs</Link>
+    </Compile>
+    <Compile Include="..\SystemExtensions\Random\ThreadLocalRandom.cs">
+      <Link>Random\ThreadLocalRandom.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Random\RandomCollectionsItem.cs" />
-    <Compile Include="Random\RandomInt64.cs" />
-    <Compile Include="Random\ThreadLocalRandom.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -15,6 +15,48 @@ namespace CSharpExtrasConsoleTests
             //TestingDeepCopy();
             //TestingReflection<int[]>();
             //PrintGenericTs();
+            PerformanceTestJaggedArrayCreateWithFuncVsVal();
+        }
+
+        private static void PerformanceTestJaggedArrayCreateWithFuncVsVal()
+        {
+            Stopwatch sw = new Stopwatch();
+            int someNumber = 42;
+
+            //spin:
+            //for (int i = 0; i < 1000000; i++)
+            //{
+            //    JaggedArray.Create(100, () => { return someNumber; });
+            //}
+            //for (int i = 0; i < 1000000; i++)
+            //{
+            //    JaggedArray.Create(100, someNumber);
+            //}
+
+            sw.Reset();
+            sw.Start();
+            for (int i = 0; i < 1000000; i++)
+            {
+                JaggedArray.Create(10, 10, 10, someNumber);
+            }
+            sw.Stop();
+            Console.WriteLine("val: " + sw.ElapsedMilliseconds);
+
+
+            sw.Reset();
+            sw.Start();
+            for (int i = 0; i < 1000000; i++)
+            {
+                JaggedArray.Create(10, 10, 10, () => { return someNumber; });
+            }
+            sw.Stop();
+            Console.WriteLine("func: " + sw.ElapsedMilliseconds);
+
+
+
+
+
+            Console.ReadKey();
         }
 
         private static void PrintGenericTs()
